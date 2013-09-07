@@ -1,0 +1,9 @@
+Parallels Licence
+=================
+
+Your Parallels licence has been move to this directory.
+
+It is called "licences.xml"
+
+Do not delete this file if you intend to restore your licence
+at a later stage.
