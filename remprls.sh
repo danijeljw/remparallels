@@ -1,76 +1,138 @@
 #!/bin/bash
-echo
-echo
-echo Parallels Removal Tool
-echo
-echo
-read -p "Press [Enter] key to begin process...]
-echo
-echo
-echo Stopping Parallels Service
-sleep 2
+
+version="2.1.0"
+
+###############################################################################
+# Load All Functions                                                          #
+###############################################################################
+
+# Function Show script help
+function showHelp {
+        clear
+        echo "Remove Parallels $version"
+        echo 
+        echo 'Usage: $0 [option]'
+        echo 
+        echo 'Option:'
+        echo '  -h | --help            This help file'
+        echo '  -r | --remove          Remove Parallels completely'
+        echo '  -s | --save-license    Remove Parallels, save License'
+        echo 
+        echo 
+}   # end of showHelp
+
+# request `sudo` access
+function reqSudo {
+sudo -v
+}   # end of reqSudo
+
+# keep-alive
+function keepAlive {
+while true; do sudo -n true; sleep 60; kill -0 '$$' || exit; done 2>/dev/null &
+}   # end of keepAlive
+
+# stop parallels service
+function stopPrls {
 for pid in $(ps aux | grep "Parallels Desktop.app" | awk '{print $2}'); do echo kill -KILL $pid; done
 for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
-echo
-echo Remove Parallels Licence
-sleep 2
+}   # end of stopPrls
+
+# remove XML License
+function remLicense {
 sudo rm /Library/Preferences/Parallels/licences.xml
-echo
-echo Removing Parallels Application
-sleep 2
-rm -rf /Application/Parallels*
-echo
-echo  Removing User Library Data
-sleep 2
-rm -rf ~/Library/Preferences/com.parallels.*
-rm -rf ~/Library/Preferences/Parallels/*
-rm -rf ~/Library/Preferences/Parallels*
-rm -rf ~/Library/Preferences/parallels/*
-rm -rf ~/Library/Preferences/parallels*
-rm -rf ~/Library/Parallels/
-rm -rf ~/Library/Logs/Parallels*
-rm -rf ~/Library/Logs/parallels*
-rm -rf ~/Library/Saved\ Application\ State/com.parallels.*/*
-rm -rf ~/Library/Saved\ Application\ State/com.parallels.*
-echo
-echo Removing Shared User Library Data
-sleep 2
-rm -rf /Users/Shared/Parallels/
-echo
-echo Removing System Library Data
-sleep 3
-rm -rf /Library/Logs/parallels*
-rm -rf /Library/Logs/Parallels*
-rm -rf /Library/logs/parallels.log
-rm -rf /Library/Preferences/com.parallels*
-rm -rf /Library/Preferences/Parallels/*
-rm -rf /Library/Preferences/Parallels
-echo
-echo Core Application Data
-sleep 3
-rm -rf /private/var/db/parallels/stats/*
-rm -rf /private/var/db/Parallels/stats/*
-rm -rf /private/var/db/parallels/stats
-rm -rf /private/var/db/Parallels/stats
-rm -rf /private/var/db/parallels
-rm -rf /private/var/.parallels_swap
-rm -rf /private/var/.Parallels_swap
-rm -rf /private/var/db/receipts/'com.parallels*'
-rm -rf /private/var/root/library/preferences/com.parallels.desktop.plist
-rm -rf /private/tmp/qtsingleapp-*-lockfile
-rm -rf /private/tmp/com.apple.installer*/*
-rm -rf /private/tmp/com.apple.installer*
-rm /System/Library/Extensions/prl*
-echo
-echo Cleaning up...this may take a few minutes
-sleep 2
-periodic daily weekly monthly
-echo
-echo Finishing everything up
-echo
-sleep 2
-killall Terminal
+}   # end of remLicense
 
+# save XML License
+function saveLicense {
+mkdir "~/Desktop/Saved\ Parallels\ Licence"
+mv /Library/Preferences/Parallels/licences.xml ~/Desktop/Saved\ Parallels\ Licence/licences.xml
+curl https://raw.github.com/danijeljames/remparallels/master/Removed-Licence.txt -o ~/Desktop/Saved\ Parallels\ Licence/Removed-Licence.txt
+}   # end of saveLicense
 
+# remove User Library data
+function remULibrary {
+sudo rm -rf ~/Library/Preferences/com.parallels.*
+sudo rm -rf ~/Library/Preferences/Parallels/*
+sudo rm -rf ~/Library/Preferences/Parallels*
+sudo rm -rf ~/Library/Preferences/parallels/*
+sudo rm -rf ~/Library/Preferences/parallels*
+sudo rm -rf ~/Library/Parallels/
+sudo rm -rf ~/Library/Logs/Parallels*
+sudo rm -rf ~/Library/Logs/parallels*
+sudo rm -rf ~/Library/Saved\ Application\ State/com.parallels.*/*
+sudo rm -rf ~/Library/Saved\ Application\ State/com.parallels.*
+}
 
+# remove System Library Data
+function remSLibrary {
+sudo rm -rf /Library/Logs/parallels*
+sudo rm -rf /Library/Logs/Parallels*
+sudo rm -rf /Library/logs/parallels.log
+sudo rm -rf /Library/Preferences/com.parallels*
+sudo rm -rf /Library/Preferences/Parallels/*
+sudo rm -rf /Library/Preferences/Parallels
+}
 
+# remove Core Application Data
+function remCoreData {
+sudo rm -rf /private/var/db/parallels/stats/*
+sudo rm -rf /private/var/db/Parallels/stats/*
+sudo rm -rf /private/var/db/parallels/stats
+sudo rm -rf /private/var/db/Parallels/stats
+sudo rm -rf /private/var/db/parallels
+sudo rm -rf /private/var/.parallels_swap
+sudo rm -rf /private/var/.Parallels_swap
+sudo rm -rf /private/var/db/receipts/'com.parallels*'
+sudo rm -rf /private/var/root/library/preferences/com.parallels.desktop.plist
+sudo rm -rf /private/tmp/qtsingleapp-*-lockfile
+sudo rm -rf /private/tmp/com.apple.installer*/*
+sudo rm -rf /private/tmp/com.apple.installer*
+sudo rm /System/Library/Extensions/prl*
+}
+
+# clean up
+function cleanUp {
+sudo periodic daily weekly monthly
+}
+
+# Function call -r
+function callR {
+reqSudo
+keepAlive
+stopPrls
+remLicense
+remULibrary
+remSLibrary
+remCoreData
+cleanUp
+}   # end of callR
+
+# Function call -s
+function callS {
+reqSudo
+keepAlive
+stopPrls
+saveLicense
+remULibrary
+remSLibrary
+remCoreData
+cleanUp
+}   # end of callS
+
+###############################################################################
+# Standard UI                                                                 #
+###############################################################################
+
+case $1 in
+        -h | --help )           showHelp
+                                exit
+                                ;;
+        -r | --remove )         callR
+                                exit
+                                ;;
+        -s | --save-license )   callS   
+                                exit
+                                ;;
+        * )                     showHelp
+                                exit 1
+esac
