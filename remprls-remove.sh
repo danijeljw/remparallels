@@ -1,3 +1,4 @@
+#!/bin/bash
 for pid in $(ps aux | grep "Parallels Desktop.app" | awk '{print $2}'); do echo kill -KILL $pid; done
 for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
 rm -rf /Library/Preferences/Parallels/licences.xml
