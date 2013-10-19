@@ -18,6 +18,8 @@
 	<string>Remove Parallels</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>aplt</string>
 	<key>LSMinimumSystemVersionByArchitecture</key>
@@ -36,9 +38,9 @@
 		<key>name</key>
 		<string>ScriptWindowState</string>
 		<key>positionOfDivider</key>
-		<real>767</real>
+		<real>1016</real>
 		<key>savedFrame</key>
-		<string>0 144 2560 1274 0 0 2560 1418 </string>
+		<string>3 144 1637 1274 0 0 2560 1418 </string>
 		<key>selectedTabView</key>
 		<string>result</string>
 	</dict>
