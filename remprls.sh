@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="2.1.0"
+version="2.1.1"
 
 ###############################################################################
 # Load All Functions                                                          #
@@ -17,7 +17,6 @@ function showHelp {
         echo '  -h | --help            This help file'
         echo '  -r | --remove          Remove Parallels completely'
         echo '  -s | --save-license    Remove Parallels, save License'
-        echo 
         echo 
 }   # end of showHelp
 
