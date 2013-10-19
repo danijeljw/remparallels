@@ -5,32 +5,37 @@ Remove Parallels from OS X
   
 ------
 
-Formerly known as "Remove Parallels All Versions". 
-
-Formerely known as "Remove Parallels All Versions". Renamed because I fixed up the original script, compiled an AppleScript that does the hard work for you, and then bundled
- it into a self-contained Mac OSX app.  Now has a feature that will save your **Parallels** licence to the desktop in a folder with a Readme file so you don't forget what it is.
-
-
-
-
-man2pdf will quickly pipe any [`manpage`](http://en.wikipedia.org/wiki/Man_page) to Preview to open up so you can save it as a `PDF` to make life easier to read it. Simply call the manpage you want as the first positional parameter after `man2pdf` and it will do the rest for you. No hassles!  
+Formerely known as "Remove Parallels All Versions". Renamed because I fixed up the original script, compiled an AppleScript that does the hard work for you, and then bundled it into a self-contained Mac OSX app.  Now has a feature that will save your **Parallels** licence to the Desktop in a folder with a ReadMe file so you don't forget what it is.
 
 #### Installation #
-Download the man2pdf script to the `/usr/bin` directory _(requires **cURL** and **sudo**)_:
+Download the `Remove Parallels` script to the `/usr/bin` directory _(requires **cURL** and **sudo**)_:
 ``` bash
-sudo curl "https://raw.github.com/danijeljames/man2pdf/master/man2pdf.sh" -o "/usr/bin/man2pdf.sh" && sudo chmod +x /usr/bin/man2pdf.sh
+sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls.sh" && sudo chmod +x /usr/bin/remprls.sh
 ```
-Install the man page for man2pdf:
+Run script from Terminal:
 ``` bash
-sudo man2pdf -i
+remprls [-s | -r]
 ```
+Download the `Remove Parallels` Mac GUI application instead:  
+[`Remove_Parallels-2.1.1.zip`](http://snipurl.com/280pjei) 
 #### Usage #
-| man2pdf | [-h]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[manpage]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[-i] |
+| man2pdf | [-h]&nbsp;&nbsp;&nbsp;[-r]&nbsp;&nbsp;&nbsp;[-s]&nbsp;&nbsp;&nbsp;[--remove]&nbsp;&nbsp;&nbsp;[--save-license] |
 |---------|---------------------|
 | `-h` | Displays the help file |
-| `-i` | Installs the manpage for man2pdf _(requires sudo)_ |
-| `manpage` | `man2pdf echo` would get the `echo` manpage and pipe it to Preview |
+| `-r` | Totally removes Parallels including license |
+| `-s` | Saves licence to Desktop and removes Parallels |
+| `--remove` | Implies `-r` |
+| `--save-license` | Implies `-s` |
 
 #### Contribution #
-- Log a [bug report](https://github.com/danijeljames/man2pdf/issues/new)
+- Log a [bug report](https://github.com/danijeljames/remparallels/issues/new)
 - Send tweet to [@danijeljames](https://twitter.com/danijeljames)
+
+#### Checksums #
+**Download:** [`Remove_Parallels-2.1.1.zip`](http://snipurl.com/280pjei)  
+**SHA1:** `e1d9c682c7fc45030c0b0e8f625ddec5c90708c5`  
+**MD5:** `7ee5205d0f27ca34bee020b0d87963c2`
+
+
+
+
