@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Remparallels by danijeljames</title>
+    <title>RemParallels by danijeljames</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -15,7 +15,7 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Remparallels</h1>
+        <h1>RemParallels</h1>
         <p>Parallels Removal Tool Mac OS X All Versions</p>
 
         <p class="view"><a href="https://github.com/danijeljames/remparallels">View the Project on GitHub <small>danijeljames/remparallels</small></a></p>
@@ -28,36 +28,72 @@
         </ul>
       </header>
       <section>
-        <p><strong>Update:</strong> Milestone v3.0.0 Created.</p>
-
-<h1>
+        <h1>
 <a name="remove-parallels-from-os-x" class="anchor" href="#remove-parallels-from-os-x"><span class="octicon octicon-link"></span></a>Remove Parallels from OS X</h1>
 
-<p><strong>Licence:</strong> MIT<br><strong>Copyright:</strong> Danijel J</p>
+<p><strong>sudo rm -rf : for parallels</strong></p>
 
-<p>Formerely known as "Remove Parallels All Versions". Renamed because I fixed up the original script, compiled an AppleScript that does the hard work for you, and then bundled it into a self-contained Mac OSX app.  Now has a feature that will save your <strong>Parallels</strong> licence to the desktop in a folder with a Readme file so you don't forget what it is.</p>
-
-<h4>
-<a name="update" class="anchor" href="#update"><span class="octicon octicon-link"></span></a>Update:</h4>
-
-<p>Added a zipped version of the App to make distribution easier.</p>
+<hr><p>Formerely known as "Remove Parallels All Versions". Renamed because I fixed up the original script, compiled an AppleScript that does the hard work for you, and then bundled it into a self-contained Mac OSX app.  Now has a feature that will save your <strong>Parallels</strong> licence to the Desktop in a folder with a ReadMe file so you don't forget what it is.</p>
 
 <h4>
-<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage:</h4>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h4>
 
-<p><strong>Original Script</strong><br>
-    $ chmod +x remprls.sh<br>
-    $ ./remprls.sh  </p>
+<p>Download the <code>Remove Parallels</code> script to the <code>/usr/bin</code> directory <em>(requires <strong>cURL</strong> and <strong>sudo</strong>)</em>:</p>
 
-<p><strong>Mac App</strong><br>
-    Double click "Remove Parallels.app"  </p>
+<div class="highlight highlight-bash"><pre>sudo curl <span class="s2">"https://raw.github.com/danijeljames/remparallels/master/remprls.sh"</span> -o <span class="s2">"/usr/bin/remprls.sh"</span> <span class="o">&amp;&amp;</span> sudo chmod +x /usr/bin/remprls.sh
+</pre></div>
 
-<p><strong>Terminal Install &amp; Run:</strong>  </p>
+<p>Run script from Terminal:</p>
+
+<div class="highlight highlight-bash"><pre>remprls <span class="o">[</span>-s | -r<span class="o">]</span>
+</pre></div>
+
+<p>Download the <code>Remove Parallels</code> Mac GUI application instead:<br><a href="http://snipurl.com/280pjei"><code>Remove_Parallels-2.1.1.zip</code></a> </p>
 
 <h4>
-<a name="requires" class="anchor" href="#requires"><span class="octicon octicon-link"></span></a>Requires:</h4>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h4>
 
-<p>Sudo access to be able to run.</p>
+<table>
+<thead><tr>
+<th>man2pdf</th>
+<th>[-h]   [-r]   [-s]   [--remove]   [--save-license]</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>-h</code></td>
+<td>Displays the help file</td>
+</tr>
+<tr>
+<td><code>-r</code></td>
+<td>Totally removes Parallels including license</td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>Saves licence to Desktop and removes Parallels</td>
+</tr>
+<tr>
+<td><code>--remove</code></td>
+<td>Implies <code>-r</code>
+</td>
+</tr>
+<tr>
+<td><code>--save-license</code></td>
+<td>Implies <code>-s</code>
+</td>
+</tr>
+</tbody>
+</table><h4>
+<a name="contribution" class="anchor" href="#contribution"><span class="octicon octicon-link"></span></a>Contribution</h4>
+
+<ul>
+<li>Log a <a href="https://github.com/danijeljames/remparallels/issues/new">bug report</a>
+</li>
+<li>Send tweet to <a href="https://twitter.com/danijeljames">@danijeljames</a>
+</li>
+</ul><h4>
+<a name="checksums" class="anchor" href="#checksums"><span class="octicon octicon-link"></span></a>Checksums</h4>
+
+<p><strong>Download:</strong> <a href="http://snipurl.com/280pjei"><code>Remove_Parallels-2.1.1.zip</code></a><br><strong>SHA1:</strong> <code>e1d9c682c7fc45030c0b0e8f625ddec5c90708c5</code><br><strong>MD5:</strong> <code>7ee5205d0f27ca34bee020b0d87963c2</code></p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/danijeljames">danijeljames</a></p>
