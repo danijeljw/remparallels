@@ -1,4 +1,4 @@
-**Update:** [Milestone 2.0](https://github.com/danijeljames/remparallels/issues?milestone=1&state=open) created for release at later stage.  
+**Update:** Milestone v3.0.0 Created.
 
 # Remove Parallels from OS X
 
