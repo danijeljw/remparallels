@@ -10,7 +10,7 @@ Formerely known as "Remove Parallels All Versions". Renamed because I fixed up t
 #### Installation #
 Download the `Remove Parallels` script to the `/usr/bin` directory _(requires **cURL** and **sudo**)_:
 ``` bash
-sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls.sh" && sudo chmod +x /usr/bin/remprls.sh
+sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls" && sudo chmod +x /usr/bin/remprls
 ```
 Run script from Terminal:
 ``` bash
