@@ -15,6 +15,10 @@
 		B92D6697182F973B007178B8 /* AppDelegate.applescript in Sources */ = {isa = PBXBuildFile; fileRef = B92D6696182F973B007178B8 /* AppDelegate.applescript */; };
 		B92D669A182F973B007178B8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = B92D6698182F973B007178B8 /* MainMenu.xib */; };
 		B92D669C182F973B007178B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B92D669B182F973B007178B8 /* Images.xcassets */; };
+		B9F6E087182FA32300CF213D /* bitcoin.png in Resources */ = {isa = PBXBuildFile; fileRef = B9F6E084182FA32300CF213D /* bitcoin.png */; };
+		B9F6E088182FA32400CF213D /* googleplay.png in Resources */ = {isa = PBXBuildFile; fileRef = B9F6E085182FA32300CF213D /* googleplay.png */; };
+		B9F6E089182FA32400CF213D /* litecoin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B9F6E086182FA32300CF213D /* litecoin.jpg */; };
+		B9F6E08B182FA34E00CF213D /* youtube-32x32.png in Resources */ = {isa = PBXBuildFile; fileRef = B9F6E08A182FA34E00CF213D /* youtube-32x32.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		B92D6696182F973B007178B8 /* AppDelegate.applescript */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.applescript; path = AppDelegate.applescript; sourceTree = "<group>"; };
 		B92D6699182F973B007178B8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		B92D669B182F973B007178B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B9F6E084182FA32300CF213D /* bitcoin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bitcoin.png; sourceTree = "<group>"; };
+		B9F6E085182FA32300CF213D /* googleplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = googleplay.png; sourceTree = "<group>"; };
+		B9F6E086182FA32300CF213D /* litecoin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = litecoin.jpg; sourceTree = "<group>"; };
+		B9F6E08A182FA34E00CF213D /* youtube-32x32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "youtube-32x32.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +106,10 @@
 		B92D668B182F973B007178B8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B9F6E08A182FA34E00CF213D /* youtube-32x32.png */,
+				B9F6E084182FA32300CF213D /* bitcoin.png */,
+				B9F6E085182FA32300CF213D /* googleplay.png */,
+				B9F6E086182FA32300CF213D /* litecoin.jpg */,
 				B92D668C182F973B007178B8 /* Bye, Parallels!-Info.plist */,
 				B92D668D182F973B007178B8 /* InfoPlist.strings */,
 				B92D6690182F973B007178B8 /* main.m */,
@@ -159,8 +171,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9F6E08B182FA34E00CF213D /* youtube-32x32.png in Resources */,
 				B92D668F182F973B007178B8 /* InfoPlist.strings in Resources */,
+				B9F6E087182FA32300CF213D /* bitcoin.png in Resources */,
+				B9F6E088182FA32400CF213D /* googleplay.png in Resources */,
 				B92D669C182F973B007178B8 /* Images.xcassets in Resources */,
+				B9F6E089182FA32400CF213D /* litecoin.jpg in Resources */,
 				B92D6695182F973B007178B8 /* Credits.rtf in Resources */,
 				B92D669A182F973B007178B8 /* MainMenu.xib in Resources */,
 			);
