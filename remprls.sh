@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="2.1.2"
+version="2.1.3"
 
 ###############################################################################
 # Load All Functions                                                          #
@@ -43,9 +43,9 @@ sudo rm /Library/Preferences/Parallels/licenses.xml
 
 # save XML License
 function saveLicense {
-mkdir "~/Desktop/Saved\ Parallels\ Licence"
-mv /Library/Preferences/Parallels/licences.xml ~/Desktop/Saved\ Parallels\ Licence/licences.xml
-curl https://raw.github.com/danijeljames/remparallels/master/Removed-Licence.txt -o ~/Desktop/Saved\ Parallels\ Licence/Removed-Licence.txt
+mkdir "~/Desktop/Saved\ Parallels\ License"
+mv /Library/Preferences/Parallels/licenses.xml ~/Desktop/Saved\ Parallels\ Licence/licenses.xml
+curl https://raw.github.com/danijeljames/remparallels/master/Removed-License.txt -o ~/Desktop/Saved\ Parallels\ Licence/Removed-License.txt
 }   # end of saveLicense
 
 # remove User Library data
