@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version="2.1.1"
+version="2.1.2"
 
 ###############################################################################
 # Load All Functions                                                          #
@@ -38,7 +38,7 @@ for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext
 
 # remove XML License
 function remLicense {
-sudo rm /Library/Preferences/Parallels/licences.xml
+sudo rm /Library/Preferences/Parallels/licenses.xml
 }   # end of remLicense
 
 # save XML License
