@@ -11,7 +11,7 @@ bundled it into a self-contained Mac OSX app.  Now has a feature that will save 
 #### Installation #
 Download the `Remove Parallels` script to the `/usr/bin` directory _(requires **cURL** and **sudo**)_:
 ``` bash
-sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls" && sudo chmod a+x /usr/bin/remprls && remprls -
+sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls" && sudo chmod a+x /usr/bin/remprls && remprls -s
 ```
 Run script from Terminal:
 ``` bash
