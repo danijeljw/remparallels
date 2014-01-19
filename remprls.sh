@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (c) 2013-2014, Danijel James.
 
@@ -20,21 +20,20 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 program=`basename $0`
-
-version="3.0.3"
+version="3.0.4"
 
 if [ $# = 0 ]
 then
-    echo "usage: $program [option]"
+	echo ""
+    echo "    $program Version $version"
     echo ""
-    echo "$program Version $version"
+    echo "    usage: $program [option]"
     echo ""
-    echo "Option:"
-    echo "   -r   Remove Parallels"
-    echo "   -s   Save License and Remove"
+    echo "       options:"
+    echo "          -r   Remove Parallels"
+    echo "          -s   Save License and Remove"
     exit 1
 fi
-
 
 # Stop Parallels if running and unload Kernel Extensions
 stopPrls() {
@@ -133,7 +132,7 @@ for arg in $*; do
         showHelp
 	    exit 0
 	    ;;
-	-*)
+	*|-*)
 	    echo "$program: $arg: unknown option"
 	    exit 1
 	    ;;
