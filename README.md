@@ -11,14 +11,14 @@ bundled it into a self-contained Mac OSX app.  Now has a feature that will save 
 #### Installation #
 Download the `Remove Parallels` script to the `/usr/bin` directory _(requires **cURL** and **sudo**)_:
 ``` bash
-sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls" && sudo chmod a+x /usr/bin/remprls && remprls -s
+sudo curl "https://raw.github.com/danijeljames/remparallels/master/remprls.sh" -o "/usr/bin/remprls" && sudo chmod a+x /usr/bin/remprls
 ```
 Run script from Terminal:
 ``` bash
 remprls [-s | -r]
 ```
-Download the `Remove Parallels` Mac GUI application instead:  
-[`Remove_Parallels-2.1.1.zip`](http://snipurl.com/280pjei) 
+Download the **Remove Parallels Mac GUI** application instead:  [`Remove_Parallels-2.1.1.zip`](http://snipurl.com/280pjei) 
+
 #### Usage #
 | remprls | [-h]&nbsp;&nbsp;&nbsp;[-r]&nbsp;&nbsp;&nbsp;[-s] |
 |---------|---------------------|
