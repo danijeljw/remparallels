@@ -66,10 +66,6 @@ if test "$#" != "0"; then
     fi
 fi
 
-
-
-
-
 #
 # Display the files and directories that will be removed
 # and get the user's consent before continuing.
@@ -81,20 +77,6 @@ if test -n "${my_files[*]}"  -o  -n "${my_directories[*]}"; then
     echo ""
 fi
 if 
-
-
-
-
-#
-# Collect KEXTs to remove.
-# Note that the unload order is significant.
-#
-declare -a my_kexts
-for kext in org.virtualbox.kext.VBoxUSB org.virtualbox.kext.VBoxNetFlt org.virtualbox.kext.VBoxNetAdp org.virtualbox.kext.VBoxDrv; do
-    if /usr/sbin/kextstat -b $kext -l | grep -q $kext; then
-        my_kexts+=("$kext")
-    fi
-done
 
 test -d /Library/Receipts/VBoxKEXTs.pkg/           && my_directories+=("/Library/Receipts/VBoxKEXTs.pkg/")
 
