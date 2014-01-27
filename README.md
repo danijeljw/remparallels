@@ -22,7 +22,6 @@ Download the **Remove Parallels Mac GUI** application instead:  [`Remove_Paralle
 #### Usage #
 | remprls | [-h]&nbsp;&nbsp;&nbsp;[-r]&nbsp;&nbsp;&nbsp;[-s] |
 |---------|---------------------|
-| `-h` | Displays the help file |
 | `-r` | Totally removes Parallels including license |
 | `-s` | Saves licence to Desktop and removes Parallels |
 
