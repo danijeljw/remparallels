@@ -1,4 +1,7 @@
 #!/bin/bash
+program=`basename $0`
+version="3.1.0"
+
 #
 # Mac OS X Parallels Removal Script v3.1.0
 #
@@ -33,14 +36,12 @@
 # hope that it will be useful, but WITHOUT ANY WARRANTY of any kind.
 #
 
-program=`basename $0`
-version="3.1.0"
-
 # Override $PATH directory to prevent issues
 export PATH="/bin:/usr/bin:/sbin:/usr/sbin:$PATH"
 
-declare -a rm_folders
-declare -a rm_files
+# Test sudo and rm are available to the user
+test -x /usr/bin/sudo || echo "warning: Cannot find /usr/bin/sudo or it's not an executable." || exit 0
+test -x /bin/rm || echo "warning: Cannot find /bin/rm or it's not an executable" || exit 0
 
 #
 # Welcome message
@@ -59,12 +60,23 @@ if test "$#" != "0"; then
         echo ""
         echo "Usage: $program [-s]"
         echo ""
-        echo "If the '-s' option is not given, the script will"
-        echo "not save a copy of your 'LICENCE.xml' file."
+        echo "If the '-s' option is not given, the script
+        echo "will not save a copy of your license file."
         echo ""
         exit 4;
     fi
 fi
+
+
+#
+# Display the sudo usage instructions and execute validation
+#
+echo "The uninstallation processes requires administrative privileges"
+echo "because some of the installed files cannot be removed by a normal"
+echo "user. You may be prompted for your password now..."
+echo ""
+sleep 5
+/usr/bin/sudo -p "Please enter %u's password:"
 
 #
 # Display the files and directories that will be removed
@@ -76,87 +88,35 @@ if test -n "${my_files[*]}"  -o  -n "${my_directories[*]}"; then
     for dir  in "${my_directories[@]}"; do echo "    $dir"; done
     echo ""
 fi
-if 
-
-test -d /Library/Receipts/VBoxKEXTs.pkg/           && my_directories+=("/Library/Receipts/VBoxKEXTs.pkg/")
-
-test -f /usr/bin/VirtualBox                        && my_files+=("/usr/bin/VirtualBox")
-
-#
-# Look for running VirtualBox processes and warn the user
-# if something is running. Since deleting the files of
-# running processes isn't fatal as such, we will leave it
-# to the user to choose whether to continue or not.
-#
-# Note! comm isn't supported on Tiger, so we make -c to do the stripping.
-#
-my_processes="`ps -axco 'pid uid command' | grep -wEe '(VirtualBox|VirtualBoxVM|VBoxManage|VBoxHeadless|vboxwebsrv|VBoxXPCOMIPCD|VBoxSVC|VBoxNetDHCP|VBoxNetNAT)' | grep -vw grep | grep -vw VirtualBox_Uninstall.tool | tr '\n' '\a'`";
-if test -n "$my_processes"; then
-    echo 'Warning! Found the following active VirtualBox processes:'
-    echo "$my_processes" | tr '\a' '\n'
-    echo ""
-    echo "We recommend that you quit all VirtualBox processes before"
-    echo "uninstalling the product."
-    echo ""
-    if test "$my_default_prompt" != "Yes"; then
-        echo "Do you wish to continue none the less (Yes/No)?"
-        read my_answer
-        if test "$my_answer" != "Yes"  -a  "$my_answer" != "YES"  -a  "$my_answer" != "yes"; then
-            echo "Aborting uninstall. (answer: '$my_answer')".
-            exit 2;
-        fi
-        echo ""
-        my_answer=""
-    fi
-fi
-
-
 
 
 #
-# Collect directories and files to remove.
-# Note: Do NOT attempt adding directories or filenames with spaces!
-#
-declare -a my_directories
-declare -a my_files
-
-if [ $# = 0 ]
-then
-	echo ""
-    echo "    $program Version $version"
-    echo ""
-    echo "    usage: $program [option]"
-    echo ""
-    echo "       options:"
-    echo "          -r   Remove Parallels"
-    echo "          -s   Save License and Remove"
-    exit 1
-fi
-
 # Stop Parallels if running and unload Kernel Extensions
-stopPrls() {
+#
+echo ""
 echo "Stopping Parallels"
+echo ""
 sleep 5
 for pid in $(ps aux | grep "Parallels*" | awk '{print $2}'); do kill -HUP $pid; done
 echo "Unloading Kernel Extensions"
 sleep 5
 for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
-}
+
 
 # remove User Library data
 remULibrary() {
 echo "Removing User Library Data"
 sleep 5
-sudo rm -rf ~/Library/Preferences/com.parallels.*
-sudo rm -rf ~/Library/Preferences/Parallels/*
-sudo rm -rf ~/Library/Preferences/Parallels*
-sudo rm -rf ~/Library/Preferences/parallels/*
-sudo rm -rf ~/Library/Preferences/parallels*
-sudo rm -rf ~/Library/Parallels/
-sudo rm -rf ~/Library/Logs/Parallels*
-sudo rm -rf ~/Library/Logs/parallels*
-sudo rm -rf ~/Library/Saved\ Application\ State/com.parallels.*/*
-sudo rm -rf ~/Library/Saved\ Application\ State/com.parallels.*
+sudo rm -rf $HOME/Library/Preferences/com.parallels.
+sudo rm -rf $HOME/Library/Preferences/Parallels/
+sudo rm -rf $HOME/Library/Preferences/Parallels
+sudo rm -rf $HOME/Library/Preferences/parallels/
+sudo rm -rf $HOME/Library/Preferences/parallels
+sudo rm -rf $HOME/Library/Parallels/
+sudo rm -rf $HOME/Library/Logs/Parallels
+sudo rm -rf $HOME/Library/Logs/parallels
+sudo rm -rf $HOME/Library/Saved\ Application\ State/com.parallels.*/
+sudo rm -rf $HOME/Library/Saved\ Application\ State/com.parallels.
 }
 
 # remove System Library Data
@@ -175,8 +135,7 @@ sudo rm -rf /Library/Preferences/Parallels
 remCoreData() {
 echo "Removing Core Application Data"
 sleep 5
-sudo rm -rf /private/var/db/parallels/stats/*
-sudo rm -rf /private/var/db/Parallels/stats/*
+sudo rm -rf /private/var/db/parallels/stats/* sudo rm -rf /private/var/db/Parallels/stats/*
 sudo rm -rf /private/var/db/parallels/stats
 sudo rm -rf /private/var/db/Parallels/stats
 sudo rm -rf /private/var/db/parallels
@@ -187,7 +146,7 @@ sudo rm -rf /private/var/root/library/preferences/com.parallels.desktop.plist
 sudo rm -rf /private/tmp/qtsingleapp-*-lockfile
 sudo rm -rf /private/tmp/com.apple.installer*/*
 sudo rm -rf /private/tmp/com.apple.installer*
-sudo rm /System/Library/Extensions/prl*
+sudo rm -rf /System/Library/Extensions/prl*
 }
 
 advRestart() {
@@ -215,9 +174,9 @@ for arg in $*; do
 		if [ -f /Library/Preferences/Parallels/licenses.xml ]; then
 			echo "Saving Parallels License to Desktop"
 			sleep 5
-			mkdir -p ~/Desktop/SavedPrlsLicense
-			/usr/bin/printf "The License for Parallels is called license.xml\n\nThis file has been saved to this directory. You will be required\nto replace this file if you install Parallels onto a new system,\nor this system again.\n\nPlease consult with Parallels for further information." >> ~/Desktop/SavedPrlsLicense/ReadMe.txt
-			sudo cp /Library/Preferences/Parallels/licenses.xml ~/Desktop/SavedPrlsLicense/
+			mkdir -p $HOME/Desktop/SavedPrlsLicense
+			/usr/bin/printf "The License for Parallels is called license.xml\n\nThis file has been saved to this directory. You will be required\nto replace this file if you install Parallels onto a new system,\nor this system again.\n\nPlease consult with Parallels for further information." >> $HOME/Desktop/SavedPrlsLicense/ReadMe.txt
+			sudo cp /Library/Preferences/Parallels/licenses.xml $HOME/Desktop/SavedPrlsLicense/
 			sudo rm -f /Library/Preferences/Parallels/licenses.xml
 		fi
 		remULibrary
