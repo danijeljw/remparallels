@@ -5,7 +5,7 @@ version="3.1.0"
 #
 # Mac OS X Parallels Removal Script v3.1.0
 #
-# Copyright (c) 2013-2014 Danijel James
+# Copyright (C) 2013-2014 Danijel James
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of
 # this software and associated documentation files (the "Software"), to deal in
@@ -61,6 +61,9 @@ fi
 # Welcome message
 echo ""
 echo "Mac OS X Remove Parallels Script v$version"
+echo ""
+echo "Copyright (C) 2013-2014 Danijel James"
+echo "Copyright (C) 2007-2013 Oracle Corporation"
 echo ""
 
 # New menu layout
