@@ -20,7 +20,7 @@ remprls [-s | -r]
 Download the **Remove Parallels Mac GUI** application instead:  [`Remove_Parallels-2.1.1.zip`](http://snipurl.com/280pjei) 
 
 #### Usage #
-| remprls | [-h]&nbsp;&nbsp;&nbsp;[-r]&nbsp;&nbsp;&nbsp;[-s] |
+| remprls | [-r]&nbsp;&nbsp;&nbsp;[-s] |
 |---------|---------------------|
 | `-r` | Totally removes Parallels including license |
 | `-s` | Saves licence to Desktop and removes Parallels |
