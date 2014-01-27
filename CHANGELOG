@@ -1,0 +1,10 @@
+### Version 3.1.0 #
+  - license save function improved
+  - test for sudo, printf, echo
+  - legacy versions supported
+  - copyright now in menu
+  - menu re-written
+  - support for native installer
+  - simplified help menu
+  - dropped support for kext
+  - merged with VirtualBox Uninstall Tool
