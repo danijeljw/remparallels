@@ -101,118 +101,99 @@ for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext
 
 
 #
+# Support for earlier Legacy Parallels Removal
+#
+
 # Remove v3.x
-#
-cd /Library/StartupItems/
-sudo rm -rf Parallels
-cd /Applications
-sudo rm -rf Parallels
-cd /System/Library/Extensions/
-sudo rm -rf vmmain.kext
-sudo rm -rf hypervisor.kext
-sudo rm -rf Pvsvnic.kext
-sudo rm -rf ConnectUSB.kext
-sudo rm -rf Pvsnet.kext
-
-#
+if [ -f /System/Library/Extensions/ConnectUSB.kext ]; then
+	sudo rm -rf /Library/StartupItems/Parallels
+	sudo rm -rf /System/Library/Extensions/vmmain.kext
+	sudo rm -rf /System/Library/Extensions/hypervisor.kext
+	sudo rm -rf /System/Library/Extensions/Pvsvnic.kext
+	sudo rm -rf /System/Library/Extensions/ConnectUSB.kext
+	sudo rm -rf /System/Library/Extensions/Pvsnet.kext
+fi
 # Remove 4.x
-#
-cd /Library/
-sudo rm -rf Parallels
-cd /Library/Preferences/
-sudo rm -rf Parallels
-cd /Library/StartupItems/
-sudo rm -rf ParallelsTransporter
-cd /System/Library/Extensions/
-sudo rm -rf prl_hid_hook.kext
-sudo rm -rf prl_hypervisor.kext
-sudo rm -rf prl_vnic.kext
-sudo rm -rf prl_usb_connect.kext
-sudo rm -rf prl_netbridge.kext
-cd /Users/<username>/
-sudo rm -rf .parallels/
-sudo rm -rf .parallels_settings
-
-#
+if [ -f /System/Library/Extensions/prl_usb_connect.kext ]; then
+	sudo rm -rf /Library/Preferences/Parallels
+	sudo rm -rf /Library/StartupItems/ParallelsTransporter
+	sudo rm -rf /System/Library/Extensions/prl_hid_hook.kext
+	sudo rm -rf /System/Library/Extensions/prl_hypervisor.kext
+	sudo rm -rf /System/Library/Extensions/prl_vnic.kext
+	sudo rm -rf /System/Library/Extensions/prl_usb_connect.kext
+	sudo rm -rf /System/Library/Extensions/prl_netbridge.kext
+	sudo rm -rf $HOME/.parallels/
+	sudo rm -rf $HOME/.parallels_settings
+fi
 # Remove 5.x
-#
-sudo launchctl stop com.parallels.vm.prl_naptd
-sudo launchctl stop com.parallels.desktop.launchdaemon
-
-sudo kextunload -b com.parallels.kext.prl_hypervisor
-sudo kextunload -b com.parallels.kext.prl_hid_hook
-sudo kextunload -b com.parallels.kext.prl_usb_connect
-sudo kextunload -b com.parallels.kext.prl_netbridge
-sudo kextunload -b com.parallels.kext.prl_vnic
-
-sudo rm -rf /Library/Parallels
-sudo rm -rf /Applications/Parallels\ Desktop.app
-sudo rm -rf /Applications/Parallels
-sudo rm -rf /var/db/receipts/com.parallels.pkg.desktop.*
-sudo rm -rf /Library/StartupItems/Parallels*
-sudo rm -rf /Library/LaunchDaemons/com.parallels.desktop.launchdaemon.plist
-sudo rm -rf /Library/LaunchAgents/com.parallels.desktop.launch.plist
-sudo rm -rf /Library/QuickLook/ParallelsQL.qlgenerator
-sudo rm -rf /Library/Spotlight/ParallelsMD.mdimporter
-sudo rm -rf /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/python/prlsdkapi
-sudo rm -rf /etc/pam.d/prl_disp_service*
-sudo rm -rf /usr/bin/prl_perf_ctl
-sudo rm -rf /usr/bin/prlctl
-sudo rm -rf /usr/bin/prlsrvctl
-sudo rm -rf /usr/include/parallels-server
-sudo rm -rf /usr/share/man/man8/prl*
-sudo rm -rf /usr/share/parallels-server
-
-#
+if [ -f /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/python/prlsdkapi ]; then
+	sudo launchctl stop com.parallels.vm.prl_naptd
+	sudo launchctl stop com.parallels.desktop.launchdaemon
+	sudo kextunload -b com.parallels.kext.prl_hypervisor
+	sudo kextunload -b com.parallels.kext.prl_hid_hook
+	sudo kextunload -b com.parallels.kext.prl_usb_connect
+	sudo kextunload -b com.parallels.kext.prl_netbridge
+	sudo kextunload -b com.parallels.kext.prl_vnic
+	sudo rm -rf /Library/Parallels
+	sudo rm -rf /Applications/Parallels\ Desktop.app
+	sudo rm -rf /Applications/Parallels
+	sudo rm -rf /var/db/receipts/com.parallels.pkg.desktop.*
+	sudo rm -rf /Library/StartupItems/Parallels*
+	sudo rm -rf /Library/LaunchDaemons/com.parallels.desktop.launchdaemon.plist
+	sudo rm -rf /Library/LaunchAgents/com.parallels.desktop.launch.plist
+	sudo rm -rf /Library/QuickLook/ParallelsQL.qlgenerator
+	sudo rm -rf /Library/Spotlight/ParallelsMD.mdimporter
+	sudo rm -rf /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/python/prlsdkapi
+	sudo rm -rf /etc/pam.d/prl_disp_service*
+	sudo rm -rf /usr/bin/prl_perf_ctl
+	sudo rm -rf /usr/bin/prlctl
+	sudo rm -rf /usr/bin/prlsrvctl
+	sudo rm -rf /usr/include/parallels-server
+	sudo rm -rf /usr/share/man/man8/prl*
+	sudo rm -rf /usr/share/parallels-server
+fi
 # Remove 6.x
-#
-sudo launchctl stop com.parallels.vm.prl_naptd
-sudo launchctl stop com.parallels.desktop.launchdaemon
-sudo launchctl stop com.parallels.vm.prl_pcproxy
-sudo killall llipd
+if [ -f /usr/bin/prl_disk_tool ]; then
+	sudo launchctl stop com.parallels.vm.prl_naptd
+	sudo launchctl stop com.parallels.desktop.launchdaemon
+	sudo launchctl stop com.parallels.vm.prl_pcproxy
+	sudo killall llipd
+	sudo kextunload -b com.parallels.kext.prl_hypervisor
+	sudo kextunload -b com.parallels.kext.prl_hid_hook
+	sudo kextunload -b com.parallels.kext.prl_usb_connect
+	sudo kextunload -b com.parallels.kext.prl_netbridge
+	sudo kextunload -b com.parallels.kext.prl_vnic
+	sudo rm -rf /Library/Parallels
+	sudo rm -rf /Applications/Parallels\ Desktop.app
+	sudo rm -rf /var/db/receipts/com.parallels.pkg.virtualization.*
+	sudo rm -rf /Library/StartupItems/Parallels*
+	sudo rm -rf /Library/LaunchDaemons/com.parallels.desktop.launchdaemon.plist
+	sudo rm -rf /Library/LaunchAgents/com.parallels.*
+	sudo rm -rf /Library/QuickLook/ParallelsQL.qlgenerator
+	sudo rm -rf /Library/Spotlight/ParallelsMD.mdimporter
+	sudo rm -rf /Library/Frameworks/ParallelsVirtualizationSDK.framework
+	sudo rm -rf /Library/Python/*/site-packages/prlsdkapi
+	sudo rm -rf /etc/pam.d/prl_disp_service*
+	sudo rm -rf /usr/bin/prl_perf_ctl
+	sudo rm -rf /usr/bin/prlctl
+	sudo rm -rf /usr/bin/prlsrvctl
+	sudo rm -rf /usr/bin/prlhosttime
+	sudo rm -rf /usr/bin/prl_disk_tool
+	sudo rm -rf /usr/bin/prl_fsd
+	sudo rm -rf /usr/include/parallels-virtualization-sdk
+	sudo rm -rf /usr/share/man/man8/prl*
+	sudo rm -rf /usr/share/parallels-virtualization-sdk
+fi
 
+# Remove 7.x
+# not supported
 
-sudo kextunload -b com.parallels.kext.prl_hypervisor
-sudo kextunload -b com.parallels.kext.prl_hid_hook
-sudo kextunload -b com.parallels.kext.prl_usb_connect
-sudo kextunload -b com.parallels.kext.prl_netbridge
-sudo kextunload -b com.parallels.kext.prl_vnic
-
-
-sudo rm -rf /Library/Parallels
-sudo rm -rf /Applications/Parallels\ Desktop.app
-sudo rm -rf /var/db/receipts/com.parallels.pkg.virtualization.*
-sudo rm -rf /Library/StartupItems/Parallels*
-sudo rm -rf /Library/LaunchDaemons/com.parallels.desktop.launchdaemon.plist
-sudo rm -rf /Library/LaunchAgents/com.parallels.*
-sudo rm -rf /Library/QuickLook/ParallelsQL.qlgenerator
-sudo rm -rf /Library/Spotlight/ParallelsMD.mdimporter
-sudo rm -rf /Library/Frameworks/ParallelsVirtualizationSDK.framework
-sudo rm -rf /Library/Python/*/site-packages/prlsdkapi
-sudo rm -rf /etc/pam.d/prl_disp_service*
-sudo rm -rf /usr/bin/prl_perf_ctl
-sudo rm -rf /usr/bin/prlctl
-sudo rm -rf /usr/bin/prlsrvctl
-sudo rm -rf /usr/bin/prlhosttime
-sudo rm -rf /usr/bin/prl_disk_tool
-sudo rm -rf /usr/bin/prl_fsd
-sudo rm -rf /usr/include/parallels-virtualization-sdk
-sudo rm -rf /usr/share/man/man8/prl*
-sudo rm -rf /usr/share/parallels-virtualization-sdk
-
-
-
-#
 # Remove 8.x
-#
-for pid in $(ps aux | grep "Parallels Desktop.app" | awk '{print $2}'); do echo kill -KILL $pid; done
-for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
+# not supported
+#for pid in $(ps aux | grep "Parallels Desktop.app" | awk '{print $2}'); do echo kill -KILL $pid; done
+#for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
+#rm /System/Library/Extensions/prl*
 
-
-rm /System/Library/Extensions/prl*
-
-
-rm -rf "Parallels Desktop.app"
 
 
 
