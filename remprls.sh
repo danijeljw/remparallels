@@ -53,9 +53,8 @@ echo ""
 #
 # New menu layout
 #
-the_default_prompt=0
 if test "$#" != "0"; then
-    if test "$#" != "1" -o "$1" != "-s"; then
+    if test "$#" != "-s"; then
         echo "Error: Unknown argument(s): $*"
         echo ""
         echo "Usage: $program [-s]"
