@@ -43,16 +43,27 @@ export PATH="/bin:/usr/bin:/sbin:/usr/sbin:$PATH"
 test -x /usr/bin/sudo || echo "warning: Cannot find /usr/bin/sudo or it's not an executable." || exit 0
 test -x /bin/rm || echo "warning: Cannot find /bin/rm or it's not an executable" || exit 0
 
-#
+# Check for native uninstaller exists
+UNINSTALLER_SCRIPT=""
+if [ -e "/Library/Parallels/Parallels Service.app/Contents/Resources/Uninstaller.sh" ]; then
+	UNINSTALLER_SCRIPT="/Library/Parallels/Parallels Service.app/Contents/Resources/Uninstaller.sh"
+elif [ -e "/Library/Parallels/Parallels Server.app/Contents/Resources/Uninstaller.sh" ]; then
+	UNINSTALLER_SCRIPT="/Library/Parallels/Parallels Server.app/Contents/Resources/Uninstaller.sh"
+fi
+
+# Run native uninstaller if exists and exit.
+# This need for uncompatible installations layouts e.g.
+if [ -n "${UNINSTALLER_SCRIPT}" ] && [ "x${UNINSTALLER_SCRIPT}" != "x${0}" ]; then
+	"${UNINSTALLER_SCRIPT}" $@
+	exit $?
+fi
+
 # Welcome message
-#
 echo ""
 echo "Mac OS X Remove Parallels Script v$version"
 echo ""
 
-#
 # New menu layout
-#
 if test "$#" != "0"; then
     if test "$#" != "-s"; then
         echo "Error: Unknown argument(s): $*"
@@ -66,10 +77,7 @@ if test "$#" != "0"; then
     fi
 fi
 
-
-#
 # Display the sudo usage instructions and execute validation
-#
 echo "The uninstallation processes requires administrative privileges"
 echo "because some of the installed files cannot be removed by a normal"
 echo "user. You may be prompted for your password now..."
@@ -77,21 +85,7 @@ echo ""
 sleep 5
 /usr/bin/sudo -p "Please enter %u's password:"
 
-#
-# Display the files and directories that will be removed
-# and get the user's consent before continuing.
-#
-if test -n "${my_files[*]}"  -o  -n "${my_directories[*]}"; then
-    echo "The following files and directories (bundles) will be removed:"
-    for file in "${my_files[@]}";       do echo "    $file"; done
-    for dir  in "${my_directories[@]}"; do echo "    $dir"; done
-    echo ""
-fi
-
-
-#
 # Stop Parallels if running and unload Kernel Extensions
-#
 echo ""
 echo "Stopping Parallels"
 echo ""
@@ -102,11 +96,150 @@ sleep 5
 for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
 
 
+
+#
+# Remove v3.x
+#
+cd /Library/StartupItems/
+sudo rm -rf Parallels
+cd /Applications
+sudo rm -rf Parallels
+cd /System/Library/Extensions/
+sudo rm -rf vmmain.kext
+sudo rm -rf hypervisor.kext
+sudo rm -rf Pvsvnic.kext
+sudo rm -rf ConnectUSB.kext
+sudo rm -rf Pvsnet.kext
+
+#
+# Remove 4.x
+#
+cd /Library/
+sudo rm -rf Parallels
+cd /Library/Preferences/
+sudo rm -rf Parallels
+cd /Library/StartupItems/
+sudo rm -rf ParallelsTransporter
+cd /System/Library/Extensions/
+sudo rm -rf prl_hid_hook.kext
+sudo rm -rf prl_hypervisor.kext
+sudo rm -rf prl_vnic.kext
+sudo rm -rf prl_usb_connect.kext
+sudo rm -rf prl_netbridge.kext
+cd /Users/<username>/
+sudo rm -rf .parallels/
+sudo rm -rf .parallels_settings
+
+#
+# Remove 5.x
+#
+sudo launchctl stop com.parallels.vm.prl_naptd
+sudo launchctl stop com.parallels.desktop.launchdaemon
+
+sudo kextunload -b com.parallels.kext.prl_hypervisor
+sudo kextunload -b com.parallels.kext.prl_hid_hook
+sudo kextunload -b com.parallels.kext.prl_usb_connect
+sudo kextunload -b com.parallels.kext.prl_netbridge
+sudo kextunload -b com.parallels.kext.prl_vnic
+
+sudo rm -rf /Library/Parallels
+sudo rm -rf /Applications/Parallels\ Desktop.app
+sudo rm -rf /Applications/Parallels
+sudo rm -rf /var/db/receipts/com.parallels.pkg.desktop.*
+sudo rm -rf /Library/StartupItems/Parallels*
+sudo rm -rf /Library/LaunchDaemons/com.parallels.desktop.launchdaemon.plist
+sudo rm -rf /Library/LaunchAgents/com.parallels.desktop.launch.plist
+sudo rm -rf /Library/QuickLook/ParallelsQL.qlgenerator
+sudo rm -rf /Library/Spotlight/ParallelsMD.mdimporter
+sudo rm -rf /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/python/prlsdkapi
+sudo rm -rf /etc/pam.d/prl_disp_service*
+sudo rm -rf /usr/bin/prl_perf_ctl
+sudo rm -rf /usr/bin/prlctl
+sudo rm -rf /usr/bin/prlsrvctl
+sudo rm -rf /usr/include/parallels-server
+sudo rm -rf /usr/share/man/man8/prl*
+sudo rm -rf /usr/share/parallels-server
+
+#
+# Remove 6.x
+#
+sudo launchctl stop com.parallels.vm.prl_naptd
+sudo launchctl stop com.parallels.desktop.launchdaemon
+sudo launchctl stop com.parallels.vm.prl_pcproxy
+sudo killall llipd
+
+
+sudo kextunload -b com.parallels.kext.prl_hypervisor
+sudo kextunload -b com.parallels.kext.prl_hid_hook
+sudo kextunload -b com.parallels.kext.prl_usb_connect
+sudo kextunload -b com.parallels.kext.prl_netbridge
+sudo kextunload -b com.parallels.kext.prl_vnic
+
+
+sudo rm -rf /Library/Parallels
+sudo rm -rf /Applications/Parallels\ Desktop.app
+sudo rm -rf /var/db/receipts/com.parallels.pkg.virtualization.*
+sudo rm -rf /Library/StartupItems/Parallels*
+sudo rm -rf /Library/LaunchDaemons/com.parallels.desktop.launchdaemon.plist
+sudo rm -rf /Library/LaunchAgents/com.parallels.*
+sudo rm -rf /Library/QuickLook/ParallelsQL.qlgenerator
+sudo rm -rf /Library/Spotlight/ParallelsMD.mdimporter
+sudo rm -rf /Library/Frameworks/ParallelsVirtualizationSDK.framework
+sudo rm -rf /Library/Python/*/site-packages/prlsdkapi
+sudo rm -rf /etc/pam.d/prl_disp_service*
+sudo rm -rf /usr/bin/prl_perf_ctl
+sudo rm -rf /usr/bin/prlctl
+sudo rm -rf /usr/bin/prlsrvctl
+sudo rm -rf /usr/bin/prlhosttime
+sudo rm -rf /usr/bin/prl_disk_tool
+sudo rm -rf /usr/bin/prl_fsd
+sudo rm -rf /usr/include/parallels-virtualization-sdk
+sudo rm -rf /usr/share/man/man8/prl*
+sudo rm -rf /usr/share/parallels-virtualization-sdk
+
+
+
+#
+# Remove 8.x
+#
+for pid in $(ps aux | grep "Parallels Desktop.app" | awk '{print $2}'); do echo kill -KILL $pid; done
+for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
+
+
+rm /System/Library/Extensions/prl*
+
+
+rm -rf "Parallels Desktop.app"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # remove User Library data
 remULibrary() {
 echo "Removing User Library Data"
 sleep 5
-sudo rm -rf $HOME/Library/Preferences/com.parallels.
+sudo rm -rf $HOME/Library/Preferences/com.parallels.*
 sudo rm -rf $HOME/Library/Preferences/Parallels/
 sudo rm -rf $HOME/Library/Preferences/Parallels
 sudo rm -rf $HOME/Library/Preferences/parallels/
