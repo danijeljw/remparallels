@@ -260,7 +260,8 @@ sudo rm -rf /Library/Preferences/Parallels
 function remCoreData {
 echo "Removing Core Application Data"
 sleep 5
-sudo rm -rf /private/var/db/parallels/stats/* sudo rm -rf /private/var/db/Parallels/stats/*
+sudo rm -rf /private/var/db/parallels/stats/*
+sudo rm -rf /private/var/db/Parallels/stats/*
 sudo rm -rf /private/var/db/parallels/stats
 sudo rm -rf /private/var/db/Parallels/stats
 sudo rm -rf /private/var/db/parallels
