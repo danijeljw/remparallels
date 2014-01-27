@@ -1,7 +1,0 @@
-The License for Parallels is called license.xml
-
-This file has been saved to this directory. You will be required
-to replace this file if you install Parallels onto a new system,
-or this system again.
-
-Please consult with Parallels for further information.
