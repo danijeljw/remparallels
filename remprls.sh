@@ -52,7 +52,6 @@ elif [ -e "/Library/Parallels/Parallels Server.app/Contents/Resources/Uninstalle
 fi
 
 # Run native uninstaller if exists and exit.
-# This need for uncompatible installations layouts e.g.
 if [ -n "${UNINSTALLER_SCRIPT}" ] && [ "x${UNINSTALLER_SCRIPT}" != "x${0}" ]; then
 	"${UNINSTALLER_SCRIPT}" $@
 	exit $?
@@ -106,16 +105,29 @@ for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext
 
 # Remove v3.x
 if [ -f /System/Library/Extensions/ConnectUSB.kext ]; then
+	echo ""
+	echo "Discovered Parallels v3.x"
+	echo ""
+	echo "uninstalling..."
+	sleep 5
 	sudo rm -rf /Library/StartupItems/Parallels
 	sudo rm -rf /System/Library/Extensions/vmmain.kext
 	sudo rm -rf /System/Library/Extensions/hypervisor.kext
 	sudo rm -rf /System/Library/Extensions/Pvsvnic.kext
 	sudo rm -rf /System/Library/Extensions/ConnectUSB.kext
 	sudo rm -rf /System/Library/Extensions/Pvsnet.kext
+	sleep 5
+	echo ""
+	echo "Removal complete"
+	exit 0
 fi
 # Remove 4.x
 if [ -f /System/Library/Extensions/prl_usb_connect.kext ]; then
-	sudo rm -rf /Library/Preferences/Parallels
+	echo ""
+	echo "Discovered Parallels v4.x"
+	echo ""
+	echo "uninstalling..."
+	sleep 5	sudo rm -rf /Library/Preferences/Parallels
 	sudo rm -rf /Library/StartupItems/ParallelsTransporter
 	sudo rm -rf /System/Library/Extensions/prl_hid_hook.kext
 	sudo rm -rf /System/Library/Extensions/prl_hypervisor.kext
@@ -124,10 +136,18 @@ if [ -f /System/Library/Extensions/prl_usb_connect.kext ]; then
 	sudo rm -rf /System/Library/Extensions/prl_netbridge.kext
 	sudo rm -rf $HOME/.parallels/
 	sudo rm -rf $HOME/.parallels_settings
+	sleep 5
+	echo ""
+	echo "Removal complete"
+	exit 0
 fi
 # Remove 5.x
 if [ -f /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/python/prlsdkapi ]; then
-	sudo launchctl stop com.parallels.vm.prl_naptd
+	echo ""
+	echo "Discovered Parallels v5.x"
+	echo ""
+	echo "uninstalling..."
+	sleep 5	sudo launchctl stop com.parallels.vm.prl_naptd
 	sudo launchctl stop com.parallels.desktop.launchdaemon
 	sudo kextunload -b com.parallels.kext.prl_hypervisor
 	sudo kextunload -b com.parallels.kext.prl_hid_hook
@@ -151,10 +171,18 @@ if [ -f /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/
 	sudo rm -rf /usr/include/parallels-server
 	sudo rm -rf /usr/share/man/man8/prl*
 	sudo rm -rf /usr/share/parallels-server
+	sleep 5
+	echo ""
+	echo "Removal complete"
+	exit 0
 fi
 # Remove 6.x
 if [ -f /usr/bin/prl_disk_tool ]; then
-	sudo launchctl stop com.parallels.vm.prl_naptd
+	echo ""
+	echo "Discovered Parallels v6.x"
+	echo ""
+	echo "uninstalling..."
+	sleep 5	sudo launchctl stop com.parallels.vm.prl_naptd
 	sudo launchctl stop com.parallels.desktop.launchdaemon
 	sudo launchctl stop com.parallels.vm.prl_pcproxy
 	sudo killall llipd
@@ -183,6 +211,10 @@ if [ -f /usr/bin/prl_disk_tool ]; then
 	sudo rm -rf /usr/include/parallels-virtualization-sdk
 	sudo rm -rf /usr/share/man/man8/prl*
 	sudo rm -rf /usr/share/parallels-virtualization-sdk
+	sleep 5
+	echo ""
+	echo "Removal complete"
+	exit 0
 fi
 
 # Remove 7.x
@@ -193,29 +225,6 @@ fi
 #for pid in $(ps aux | grep "Parallels Desktop.app" | awk '{print $2}'); do echo kill -KILL $pid; done
 #for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
 #rm /System/Library/Extensions/prl*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -273,17 +282,6 @@ sleep 5
 
 args=
 for arg in $*; do
-    case $arg in
-	-r)
-		sudo -v
-		stopPrls
-		sudo rm /Library/Preferences/Parallels/licenses.xml
-	    remULibrary
-		remSLibrary
-		remCoreData
-		advRestart
-	    exit 0
-	    ;;
 	-s)
 		sudo -v
 		stopPrls
