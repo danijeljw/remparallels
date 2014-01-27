@@ -42,6 +42,7 @@ export PATH="/bin:/usr/bin:/sbin:/usr/sbin:$PATH"
 # Test sudo and rm are available to the user
 test -x /usr/bin/sudo || echo "warning: Cannot find /usr/bin/sudo or it's not an executable." || exit 0
 test -x /bin/rm || echo "warning: Cannot find /bin/rm or it's not an executable" || exit 0
+test -x /usr/bin/printf || echo "warning: Cannot find /usr/bin/printf or it's not an executable" || exit 0
 
 # Check for native uninstaller exists
 UNINSTALLER_SCRIPT=""
@@ -65,39 +66,23 @@ echo "Copyright (C) 2013-2014 Danijel James"
 echo "Copyright (C) 2007-2013 Oracle Corporation"
 echo ""
 
-# New menu layout
-if test "$#" != "0"; then
-    if test "$#" != "-s"; then
-        echo "Error: Unknown argument(s): $*"
-        echo ""
-        echo "Usage: $program [-s]"
-        echo ""
-        echo "If the '-s' option is not given, the script
-        echo "will not save a copy of your license file."
-        echo ""
-        exit 4;
-    fi
-fi
-
 # Display the sudo usage instructions and execute validation
 echo "The uninstallation processes requires administrative privileges"
 echo "because some of the installed files cannot be removed by a normal"
 echo "user. You may be prompted for your password now..."
 echo ""
 sleep 5
-/usr/bin/sudo -p "Please enter %u's password:"
+/usr/bin/sudo -p "Please enter %u's password:" sudo -v
 
 # Stop Parallels if running and unload Kernel Extensions
 echo ""
 echo "Stopping Parallels"
 echo ""
 sleep 5
-for pid in $(ps aux | grep "Parallels*" | awk '{print $2}'); do kill -HUP $pid; done
+for pid in $(ps aux | grep "Parallels*" | awk '{print $2}'); do sudo kill -HUP $pid; done
 echo "Unloading Kernel Extensions"
 sleep 5
-for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
-
-
+for kext in $(kextstat | grep parallels | awk '{print $6}'); do sudo kextunload $kext; done
 
 #
 # Support for earlier Legacy Parallels Removal
@@ -116,7 +101,6 @@ if [ -f /System/Library/Extensions/ConnectUSB.kext ]; then
 	sudo rm -rf /System/Library/Extensions/Pvsvnic.kext
 	sudo rm -rf /System/Library/Extensions/ConnectUSB.kext
 	sudo rm -rf /System/Library/Extensions/Pvsnet.kext
-	sleep 5
 	echo ""
 	echo "Removal complete"
 	exit 0
@@ -127,7 +111,8 @@ if [ -f /System/Library/Extensions/prl_usb_connect.kext ]; then
 	echo "Discovered Parallels v4.x"
 	echo ""
 	echo "uninstalling..."
-	sleep 5	sudo rm -rf /Library/Preferences/Parallels
+	sleep 5
+	sudo rm -rf /Library/Preferences/Parallels
 	sudo rm -rf /Library/StartupItems/ParallelsTransporter
 	sudo rm -rf /System/Library/Extensions/prl_hid_hook.kext
 	sudo rm -rf /System/Library/Extensions/prl_hypervisor.kext
@@ -136,7 +121,6 @@ if [ -f /System/Library/Extensions/prl_usb_connect.kext ]; then
 	sudo rm -rf /System/Library/Extensions/prl_netbridge.kext
 	sudo rm -rf $HOME/.parallels/
 	sudo rm -rf $HOME/.parallels_settings
-	sleep 5
 	echo ""
 	echo "Removal complete"
 	exit 0
@@ -147,7 +131,8 @@ if [ -f /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/
 	echo "Discovered Parallels v5.x"
 	echo ""
 	echo "uninstalling..."
-	sleep 5	sudo launchctl stop com.parallels.vm.prl_naptd
+	sleep 5
+	sudo launchctl stop com.parallels.vm.prl_naptd
 	sudo launchctl stop com.parallels.desktop.launchdaemon
 	sudo kextunload -b com.parallels.kext.prl_hypervisor
 	sudo kextunload -b com.parallels.kext.prl_hid_hook
@@ -171,7 +156,6 @@ if [ -f /System/Library/Frameworks/Python.framework/Versions/Current/Extras/lib/
 	sudo rm -rf /usr/include/parallels-server
 	sudo rm -rf /usr/share/man/man8/prl*
 	sudo rm -rf /usr/share/parallels-server
-	sleep 5
 	echo ""
 	echo "Removal complete"
 	exit 0
@@ -182,7 +166,8 @@ if [ -f /usr/bin/prl_disk_tool ]; then
 	echo "Discovered Parallels v6.x"
 	echo ""
 	echo "uninstalling..."
-	sleep 5	sudo launchctl stop com.parallels.vm.prl_naptd
+	sleep 5
+	sudo launchctl stop com.parallels.vm.prl_naptd
 	sudo launchctl stop com.parallels.desktop.launchdaemon
 	sudo launchctl stop com.parallels.vm.prl_pcproxy
 	sudo killall llipd
@@ -211,7 +196,6 @@ if [ -f /usr/bin/prl_disk_tool ]; then
 	sudo rm -rf /usr/include/parallels-virtualization-sdk
 	sudo rm -rf /usr/share/man/man8/prl*
 	sudo rm -rf /usr/share/parallels-virtualization-sdk
-	sleep 5
 	echo ""
 	echo "Removal complete"
 	exit 0
@@ -226,10 +210,26 @@ fi
 #for kext in $(kextstat | grep parallels | awk '{print $6}'); do kextunload $kext; done
 #rm /System/Library/Extensions/prl*
 
-
+# save Licence.xml
+function saveLicence {
+if [ -f /Library/Preferences/Parallels/licenses.xml ]; then
+	echo ""
+	echo "Saving Parallels License to Desktop"
+	echo ""
+	sleep 3
+	mkdir -p $HOME/Desktop/SavedPrlsLicense
+	/usr/bin/printf "The License for Parallels is called license.xml\n\nThis file has been saved to this directory. You will be required\nto replace this file if you install Parallels onto a new system,\nor this system again.\n\nPlease consult with Parallels for further information." >> $HOME/Desktop/SavedPrlsLicense/ReadMe.txt
+	sudo cp /Library/Preferences/Parallels/licenses.xml $HOME/Desktop/SavedPrlsLicense/
+	sudo rm -f /Library/Preferences/Parallels/licenses.xml
+else
+	echo ""
+	echo "A valid Parallels licence file was not found!"
+	echo ""
+fi
+}
 
 # remove User Library data
-remULibrary() {
+function remULibrary {
 echo "Removing User Library Data"
 sleep 5
 sudo rm -rf $HOME/Library/Preferences/com.parallels.*
@@ -245,7 +245,7 @@ sudo rm -rf $HOME/Library/Saved\ Application\ State/com.parallels.
 }
 
 # remove System Library Data
-remSLibrary() {
+function remSLibrary {
 echo "Removing System Library Data"
 sleep 5
 sudo rm -rf /Library/Logs/parallels*
@@ -257,7 +257,7 @@ sudo rm -rf /Library/Preferences/Parallels
 }
 
 # remove Core Application Data
-remCoreData() {
+function remCoreData {
 echo "Removing Core Application Data"
 sleep 5
 sudo rm -rf /private/var/db/parallels/stats/* sudo rm -rf /private/var/db/Parallels/stats/*
@@ -274,46 +274,41 @@ sudo rm -rf /private/tmp/com.apple.installer*
 sudo rm -rf /System/Library/Extensions/prl*
 }
 
-advRestart() {
+function advRestart {
+echo ""
 echo "It is advised you restart your system"
 echo "to complete the removal process..."
+echo ""
 sleep 5
 }
 
-args=
-for arg in $*; do
-	-s)
-		sudo -v
-		stopPrls
-		if [ -f /Library/Preferences/Parallels/licenses.xml ]; then
-			echo "Saving Parallels License to Desktop"
-			sleep 5
-			mkdir -p $HOME/Desktop/SavedPrlsLicense
-			/usr/bin/printf "The License for Parallels is called license.xml\n\nThis file has been saved to this directory. You will be required\nto replace this file if you install Parallels onto a new system,\nor this system again.\n\nPlease consult with Parallels for further information." >> $HOME/Desktop/SavedPrlsLicense/ReadMe.txt
-			sudo cp /Library/Preferences/Parallels/licenses.xml $HOME/Desktop/SavedPrlsLicense/
-			sudo rm -f /Library/Preferences/Parallels/licenses.xml
-		fi
-		remULibrary
-		remSLibrary
-		remCoreData
-		advRestart
-		exit 0
-		;;
-	--help|-h)
-        showHelp
-	    exit 0
-	    ;;
-	*|-*)
-	    echo "$program: $arg: unknown option"
-	    exit 1
-	    ;;
-    esac
-done
-
-
-if test "$my_rc" -eq 0; then
-    echo "Successfully unloaded VirtualBox kernel extensions."
-else
-
-echo "Done."
-exit 0;
+case "$1" in
+        -r|-R)
+          remULibrary
+          remSLibrary
+          remCoreData
+          advRestart
+          exit 1
+          ;;
+        -s|-S)
+		  saveLicence
+          remULibrary
+          remSLibrary
+          remCoreData
+          advRestart
+          exit 0
+          ;;
+        *|-*)
+          clear
+          echo ""
+          echo "Error: Unknown argument(s): $*"
+          echo ""
+          echo "Usage: $program [-s|-r]"
+          echo ""
+          echo "   -s   Saves license if exist"
+          echo "   -r   Remove all files
+          echo ""
+          sleep 3
+          exit 1
+          ;;
+esac
