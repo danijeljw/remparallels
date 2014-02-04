@@ -37,3 +37,7 @@ Download the **Remove Parallels Mac GUI** application instead:  [`Remove_Paralle
 
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/danijeljames/remparallels/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
